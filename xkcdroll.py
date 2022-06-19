@@ -16,24 +16,32 @@ def parse_arguments():
     :returns: argument dictionary
     """
     parser = argparse.ArgumentParser(add_help=True)
-    parser.add_argument("-n", "--number",
-                        default=3,
-                        dest="num_words",
-                        help="number of words to be generated",
-                        type=int
-                        )
-    parser.add_argument("-m", "--min-length",
-                        default=3,
-                        dest="min_length",
-                        help="minimum length of word",
-                        type=int
-                        )
+    parser.add_argument("-c", "--capitalize",
+                        default="lower",
+                        dest="strategy",
+                        help="strategy to capitalize generated words ('lower', \
+                        'upper', 'alternating-words', 'alternating-chars') \
+                        default 'lower'",
+                        type=str)
     parser.add_argument("-d", "--delimiter",
                         default="|",
                         dest="delimiter",
                         help="delimiter symbol to be used between words",
-                        type=str
-                        )
+                        type=str)
+    parser.add_argument("-i", "--interactive",
+                        dest="interactive",
+                        help="interactive mode",
+                        action="store_true")
+    parser.add_argument("-m", "--min-length",
+                        default=3,
+                        dest="min_length",
+                        help="minimum length of word",
+                        type=int)
+    parser.add_argument("-n", "--number",
+                        default=3,
+                        dest="num_words",
+                        help="number of words to be generated",
+                        type=int)
     args = parser.parse_args()
     return args
 
@@ -93,10 +101,19 @@ if __name__ == "__main__":
     num_words = arguments.num_words
     min_length = arguments.min_length
     delimiter = arguments.delimiter
+    interactive = arguments.interactive
 
-    phrase = generate_phrase(num_words,
-                             min_length,
-                             delimiter,
-                             dictionary,
-                             dict_length)
-    print(phrase)
+    while True:
+        phrase = generate_phrase(num_words,
+                                 min_length,
+                                 delimiter,
+                                 dictionary,
+                                 dict_length)
+        print(phrase)
+        if interactive:
+            inp = input("Is this OK? (yes/no): ").lower()
+            if inp in ("yes", "y"):
+                print(phrase)
+                break
+        else:
+            break
