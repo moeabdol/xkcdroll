@@ -21,12 +21,13 @@ def parse_arguments():
                         dest="strategy",
                         help="strategy to capitalize generated words ('lower', \
                         'upper', 'alternating-words', 'alternating-chars') \
-                        default 'lower'",
+                        (default 'lower')",
                         type=str)
     parser.add_argument("-d", "--delimiter",
                         default="|",
                         dest="delimiter",
-                        help="delimiter symbol to be used between words",
+                        help="delimiter symbol to be used between words (default \
+                        '|')",
                         type=str)
     parser.add_argument("-i", "--interactive",
                         dest="interactive",
@@ -35,12 +36,12 @@ def parse_arguments():
     parser.add_argument("-m", "--min-length",
                         default=3,
                         dest="min_length",
-                        help="minimum length of word",
+                        help="minimum length of word (default 3)",
                         type=int)
     parser.add_argument("-n", "--number",
                         default=3,
                         dest="num_words",
-                        help="number of words to be generated",
+                        help="number of words to be generated (default 3)",
                         type=int)
     args = parser.parse_args()
     return args
@@ -102,6 +103,7 @@ if __name__ == "__main__":
     min_length = arguments.min_length
     delimiter = arguments.delimiter
     interactive = arguments.interactive
+    strategy = arguments.strategy
 
     while True:
         phrase = generate_phrase(num_words,
