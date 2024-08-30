@@ -51,7 +51,7 @@ def load_dictionary():
     """
     Function to load english dictionary
 
-    :returns: dicationary of english words as an array
+    :returns: dictionary of english words as an array
     """
     with open("dictionary.json", "r", encoding="utf-8") as _file:
         words = _file.read()
