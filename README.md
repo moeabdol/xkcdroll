@@ -50,3 +50,18 @@ the phrase.
 As computers get faster and faster, passwords can also get cracked faster. The
 recommended entropy score for a password as of this writing should be above
 70bits.
+
+## How to Run the Code
+1. Make sure you have python3 and pip
+2. Install dependencies by running the following
+```bash
+$ pip install -r requirements.txt
+```
+3. Either run the program directly as a python script
+```bash
+$ python3 xkcdroll
+```
+4. Or copy the executable `xkcdroll` command somewhere in your `$PATH`
+```bash
+$ cp ./xkcdroll /usr/bin
+```
