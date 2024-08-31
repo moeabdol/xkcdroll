@@ -31,8 +31,22 @@ dictionary.
                       number of words to be generated (default 3)
 ```
 
+## EFF Word List
+The application uses the Electronic Frontier Foundation's long list of words.
+It can be found [here](https://www.eff.org/dice).
+
 ## How is Entropy Calculated?
+Shannon's entropy is a common mathematical notation in Information Theory which
+describes a measure of disorder or randomness. The highest the score is in
+bits the more disordered or random a thing is, and the harder it is to be
+recreated or reassembled.
+
 $\log_2(P^L)$
 
 Where P is the pool of possible symbols/words, and L is the number of words in
 the phrase.
+
+## What is the Recommended Entropy Score?
+As computers get faster and faster, passwords can also get cracked faster. The
+recommended entropy score for a password as of this writing should be above
+70bits.
