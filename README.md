@@ -30,3 +30,9 @@ dictionary.
 -n NUM_WORDS, --number NUM_WORDS
                       number of words to be generated (default 3)
 ```
+
+## How is Entropy Calculated?
+$\log_2(P^L)$
+
+Where P is the pool of possible symbols/words, and L is the number of words in
+the phrase.
