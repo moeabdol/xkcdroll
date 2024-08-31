@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+"""
+XKCD Roll
+"""
+from random import SystemRandom
+import argparse
+import math
+from termcolor import colored
+
+cryptogen = SystemRandom()
+
+
+def parse_arguments():
+    """
+    Function to parse command line arguments
+
+    :returns: argument dictionary
+    """
+    parser = argparse.ArgumentParser(add_help=True)
+    parser.add_argument("-s", "--strategy",
+                        default="lower",
+                        dest="strategy",
+                        help="capitalize strategy for generated words ('lower', \
+                        'upper', 'alternating_words', 'alternating_chars') \
+                        (default 'lower')",
+                        type=str)
+    parser.add_argument("-d", "--delimiter",
+                        default=" ",
+                        dest="delimiter",
+                        help="delimiter symbol to be used between words (default \
+                        ' ')",
+                        type=str)
+    parser.add_argument("-i", "--interactive",
+                        dest="interactive",
+                        help="interactive mode",
+                        action="store_true")
+    parser.add_argument("-n", "--number",
+                        default=3,
+                        dest="num_words",
+                        help="number of words to be generated (default 3)",
+                        type=int)
+    args = parser.parse_args()
+    return args
+
+
+def dictionary_length():
+    """
+    Function to count entries in eff_large_wordlist.txt
+
+    :returns: number of entries in the dictionary
+    """
+    with open("eff_large_wordlist.txt", "r", encoding="utf-8") as _file:
+        lines = len(_file.readlines())
+        return lines
+
+
+def get_word(dice_roll):
+    """
+    Function to retrieve word corresponding to generated dice roll from
+    dictionary.
+
+    :dice_roll: word index in the dictionary
+
+    :return: word from the dictionary
+    """
+    with open("eff_large_wordlist.txt", "r", encoding="utf-8") as _file:
+        for line in _file:
+            idx, word = line.split()
+            if idx == dice_roll:
+                return word
+    return ""
+
+
+def roll():
+    """
+    Roll a single die
+
+    :returns: random number from 1 to 6
+    """
+    return cryptogen.randrange(1, 7, 1)
+
+
+def generate_phrase(num, delim, strat):
+    """
+    Function to generate random phrase by rolling 5 dice for each word in the
+    pharse.
+
+    :num: number of words to generate
+    :delim: delimiter between words
+    :strategy: capitalization strategy
+
+    :returns: random phrase
+    """
+    print("idx\tWord")
+    random_phrase = ""
+    for i in range(num):
+        word_idx = ""
+        for j in range(6):
+            num = roll()
+            word_idx += str(num)
+            if j == 4:
+                break
+        word = get_word(word_idx)
+        print(f"{word_idx}\t{word}")
+
+        # Implement strategy rules
+        if strat == "upper":
+            word = word.upper()
+        elif strat == "alternating_words":
+            # Toss a coin
+            upper = False
+            if cryptogen.randrange(0, 2, 1) == 1:
+                word = word.upper()
+                upper = True
+            if upper is False and i == num - 1:
+                word = word.upper()
+        elif strat == "alternating_chars":
+            *chars, = word
+            word = ""
+            for char in chars:
+                # Toss a coin
+                if cryptogen.randrange(0, 2, 1) == 1:
+                    word += char.upper()
+                else:
+                    word += char
+
+        random_phrase += word
+
+        if i < num_words - 1:
+            random_phrase += delim
+
+    return random_phrase
+
+
+def calculate_entropy(length, size):
+    """
+    Function to calculate phrase entropy
+
+    :length: Password length (number of symbols/words in the password)
+    :size: Pool size (the pool of unique possible symbols)
+
+    :returns: calculated entropy
+    """
+    return math.log2(size ** length)
+
+
+if __name__ == "__main__":
+    arguments = parse_arguments()
+    dict_length = dictionary_length()
+
+    num_words = arguments.num_words
+    delimiter = arguments.delimiter
+    interactive = arguments.interactive
+    strategy = arguments.strategy
+
+    while True:
+        phrase = generate_phrase(num_words, delimiter, strategy)
+        entropy = calculate_entropy(num_words, dict_length)
+
+        COLOR = "black"
+        ON_COLOR = "on_red"
+        STRENGTH = "Weak"
+        if entropy > 70:
+            ON_COLOR = "on_green"
+            STRENGTH = "Strong"
+        elif entropy > 40:
+            ON_COLOR = "on_yellow"
+            STRENGTH = "Medium"
+
+        print(f"Phrase: {phrase}")
+        print(f"Entropy: {colored(f"{entropy:.2f}", COLOR, ON_COLOR, attrs={"bold"})} bits. {colored(f"({STRENGTH})", COLOR, ON_COLOR, attrs=["bold"])}")
+
+        if interactive:
+            inp = input("Is this OK? yes (y) / no (n): ").lower()
+            if inp in ("yes", "y"):
+                print(phrase)
+                break
+        else:
+            break
