@@ -35,7 +35,7 @@ dictionary.
 The application uses the Electronic Frontier Foundation's long list of words.
 It can be found [here](https://www.eff.org/dice).
 
-## How is Entropy Calculated?
+## How Entropy is Calculated?
 Shannon's entropy is a common mathematical notation in Information Theory which
 describes a measure of disorder or randomness. The highest the score is in
 bits the more disordered or random a thing is, and the harder it is to be
@@ -64,4 +64,5 @@ $ python3 xkcdroll
 4. Or copy the executable `xkcdroll` command somewhere in your `$PATH`
 ```bash
 $ cp ./xkcdroll /usr/bin
+$ xkcdroll -h
 ```
