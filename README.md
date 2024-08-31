@@ -2,6 +2,8 @@
 Simple terminal diceware to generate high-entropy passwords. The application
 was inspired by [xkcd 936](https://xkcd.com/936/).
 
+![xkcd 936](images/password_strength.png "xkcd 936")
+
 ## How it Works?
 Simple! You choose the number of words you want in the final genrated phrase,
 and the application will roll a die 5 times for each word. This will produce a
@@ -18,6 +20,7 @@ dictionary.
 ```
 
 ## Commandline Arguments
+```
 -h, --help            show this help message and exit
 -s STRATEGY, --strategy STRATEGY
                       capitalize strategy for generated words ('lower', 'upper', 'alternating_words', 'alternating_chars') (default 'lower')
@@ -26,6 +29,4 @@ dictionary.
 -i, --interactive     interactive mode
 -n NUM_WORDS, --number NUM_WORDS
                       number of words to be generated (default 3)
-
-
-![xkcd 936](images/password_strength.png "xkcd 936")
+```
